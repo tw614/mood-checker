@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>mood checker</title>
+  <link rel="icon" href="favicon img.png">
+  <style>
+    body {
+      background-image: url('background img check.png');
+      background-position: top;
+      background-repeat: no-repeat;
+      font-family: 'Jacquard 12', cursive;
+      text-align: center;
+      letter-spacing: 3px;
+      border-color: transparent;
+      color: #919cb9;
+      font-size: 40px;
+      margin-bottom: 16px;
+      font-weight: lighter;
+    }
+
+    .question {
+      font-size: 40px;
+      margin: 40px 0 20px;
+      margin-bottom: 120px;
+    }
+
+    .options {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 24px;
+      margin-bottom: 40px;
+    }
+
+    .option-button {
+      position: relative;
+      display: inline-block;
+      border: none;
+      background: none;
+      cursor: pointer;
+    }
+
+    .option-button img {
+      width: 216px;
+      height: auto;
+      display: block;
+    }
+
+    .option-button span {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
+      font-size: 28px;
+      font-family: 'Jacquard 12', cursive;
+      pointer-events: none;
+    }
+
+    img.icon {
+      width: 140px;
+      margin: 0 40px;
+    }
+  </style>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jacquard+12&display=swap">
+</head>
+
+<body>
+  <h1>mood checker</h1>
+
+  <div class="question" id="question-text"></div>
+
+  <div id="question-icons" style="display: flex; justify-content: center; gap: 40px; margin-bottom: 16px;"></div>
+
+  <div class="options" id="options-container"></div>
+
+  <script>
+    const questions = [
+      {
+        text: "How did you wake up this morning?",
+        options: ["Energized!", "I needed to", "Still tired...", "Exhausted"],
+        icons: ["sun img.png", "alarmclock img.png", "coffee img.png", "moyamoya img.png"]
+      },
+      {
+        text: "What are you craving right now?",
+        options: ["Coffee", "Breakfast", "Sleep", "Sunshine"],
+        icons: ["coffee img.png", "bread img.png", "sleep img.png", "sun img.png"]
+      },
+      {
+        text: "How many alarms did you need to wake up?",
+        options: ["non!", "1 or 2!", "3 or more...", "stopped the it for more sleep..."],
+        icons: ["clover img.png", "favicon img.png", "alarmclock img.png", "moyamoya img.png"]
+      },
+      {
+        text: "It's raining!! Is the weather affecting your mood?",
+        options: ["Yes, alot!", "A little", "Not that much", "Not at all!"],
+        icons: ["rain img.png", "wing img.png", "coffee img.png", "sun img.png"]
+      },
+      {
+        text: "How do you feel about today’s plans or schedule?",
+        options: ["I'm excited!", "I feel lazy about it", "I'll cancel my plans", "I don't have plans"],
+        icons: ["kira-img.png", "alarmclock img.png", "moyamoya img.png", "favicon img.png"]
+      },
+      {
+        text: "If you had to describe today as a color, what would it be?",
+        options: ["yellow and orange!", "cool blue or gray", "soft spring colors", "pastel colors"],
+        icons: ["yellowfavicon img.png", "favicon img.png", "pink favicon.png", "purple favicon.png"]
+      },
+      {
+        text: "What would you rather do on a free day?",
+        options: ["Go on an adventure!!", "read and relax", "reset with a nap", "meet friends!!"],
+        icons: ["clover img.png", "book-img.png", "sleep img.png", "sun img.png"]
+      },
+      {
+        text: "What's your favorite kind of weather?",
+        options: ["cool and rainy", "warm and sunny", "cloudy and cozy", "breeze and fresh!"],
+        icons: ["rain img.png", "sun img.png", "cloudy-img.png", "breeze-img.png"]
+      },
+    ];
+
+    const results = {
+      energized: "You are feeling great and full of energy today! Keep that positive attitude going!",
+      neutral: "You are in a balanced mood today, nothing too extreme. Enjoy the calm!",
+      ltired: "You are a little tired, but try your best in your own pace!",
+      tired: "You are feeling tired today. Take it easy and recharge when you can."
+    };
+
+    let currentQuestion = 0;
+    let scores = { energized: 0, neutral: 0, ltired: 0, tired: 0 };
+    let answers = [];
+
+    const questionText = document.getElementById("question-text");
+    const optionsContainer = document.getElementById("options-container");
+    const iconsContainer = document.getElementById("question-icons");
+
+    const answersMap = {
+      "Energized!": "energized",
+      "I needed to": "neutral",
+      "Still tired...": "ltired",
+      "Exhausted": "tired",
+      "Coffee": "ltired",
+      "Breakfast": "neutral",
+      "Sleep": "tired",
+      "Sunshine": "energized",
+      "non!": "energized",
+      "1 or 2!": "neutral",
+      "3 or more...": "ltired",
+      "stopped the it for more sleep...": "tired",
+      "Yes, alot!": "tired",
+      "A little": "tired",
+      "Not that much": "neutral",
+      "Not at all!": "energized",
+      "bright yellow and orange": "energized",
+      "cool blue or gray": "tired",
+      "spring colors like pink or green": "neutral",
+      "pastel colors": "neutral",
+      "Go on an adventure!!": "energized",
+      "read and relax": "ltired",
+      "long naps to forget everything": "tired",
+      "meet friends!!": "neutral",
+      "cool and rainy": "tired",
+      "warm and sunny": "energized",
+      "cloudy and cozy": "ltired",
+      "breeze and fresh!": "neutral"
+    };
+
+    function showQuestion() {
+      const current = questions[currentQuestion];
+      questionText.textContent = current.text;
+      optionsContainer.innerHTML = "";
+      iconsContainer.innerHTML = "";
+
+      current.icons.forEach(src => {
+        const img = document.createElement("img");
+        img.src = src;
+        img.alt = "icon";
+        img.className = "icon";
+        iconsContainer.appendChild(img);
+      });
+
+      current.options.forEach(option => {
+        const button = document.createElement("button");
+        button.className = "option-button";
+
+        const img = document.createElement("img");
+        img.src = "start img.png";
+        img.alt = "button";
+
+        const span = document.createElement("span");
+        span.textContent = option;
+
+        button.appendChild(img);
+        button.appendChild(span);
+
+        button.onclick = () => handleAnswer(option);
+        optionsContainer.appendChild(button);
+      });
+    }
+
+    function handleAnswer(answer) {
+      const type = answersMap[answer];
+      if (type) scores[type]++;
+      answers.push(answer);
+      console.log("Current answers:", answers);  // デバッグ用
+      console.log("Current scores:", scores);  // デバッグ用
+      currentQuestion++;
+      if (currentQuestion < questions.length) {
+        showQuestion();
+      } else {
+        showResult();
+      }
+    }
+
+    function showResult() {
+      const resultType = Object.entries(scores).reduce((a, b) => a[1] > b[1] ? a : b)[0];
+    }
+
+    const moodToAnimal = {
+      energized: ["sunnybunny", "curiousfox"],
+      neutral: ["balancedowl", "dreamydeer"],
+      ltired: ["lazycat", "calmkoala"],
+      tired: ["stormyraven", "sleepysloth"]
+    };
+
+    let selectedAnimal;
+
+  // 最初の showResult 関数
+  function showResult() {
+  const resultType = Object.entries(scores).reduce((a, b) => a[1] > b[1] ? a : b)[0];
+  const animalResult = moodToAnimal[resultType];
+  let selectedAnimal;
+
+  if (resultType === "energized") {
+    if (answers.includes("Go on an adventure!!")) {
+      selectedAnimal = "curiousfox";
+    } else if (answers.includes("meet friends!!")) {
+      selectedAnimal = "sunnybunny";
+    } else {
+      selectedAnimal = animalResult[Math.floor(Math.random() * animalResult.length)];
+    }
+  } else if (resultType === "tired") {
+    const cravingAnswer = answers[1];
+    if (cravingAnswer === "Coffee" || cravingAnswer === "Sunshine") {
+      selectedAnimal = "stormyraven";
+    } else if (cravingAnswer === "Sleep") {
+      selectedAnimal = "sleepysloth";
+    } else {
+      selectedAnimal = animalResult[Math.floor(Math.random() * animalResult.length)];
+    }
+  } else if (resultType === "neutral") {
+    if (answers.includes("Yes, alot!") || answers.includes("A little")) {
+      selectedAnimal = "dreamydeer";
+    } else if (answers.includes("Not at all!") || answers.includes("Not that much")) {
+      selectedAnimal = "balancedowl";
+    } else {
+      selectedAnimal = animalResult[Math.floor(Math.random() * animalResult.length)];
+    }
+  } else if (resultType === "ltired") {
+    if (answers.includes("I'm looking forward to it!")) {
+      selectedAnimal = "calmkoala";  // 「I'm looking forward to it!」でcalm koalaが選ばれる
+    } else if (answers.includes("I feel lazy about it") || answers.includes("I'll cancel my plans")) {
+      selectedAnimal = "lazycat";  // 「I'll cancel my plans」や「I feel lazy about it」でlazy cat
+    } else {
+      selectedAnimal = animalResult[Math.random() < 0.8 ? 0 : 1];  // その他のケースでcalm koalaまたはlazy cat
+    }
+  } else {
+    selectedAnimal = animalResult[Math.floor(Math.random() * animalResult.length)];
+  }
+
+  // 結果を表示するページに遷移
+  // 遷移は結果表示後に行う
+  setTimeout(() => {
+    window.location.href = `result.html?result=${selectedAnimal}`;
+  }, 500);  // 0.5秒遅延させてから遷移
+}
+
+
+      showQuestion();
+  </script>
+</body>
+
+</html> 

@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>mood checker</title>
+  <link rel="icon" href="favicon img.png">
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jacquard+12&display=swap">
+  <link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      background-image: url('background dots img.png');
+    }
+    html, body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+.frame-3 {
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+    .frame-3 {
+  min-height: 100vh; /* ← これに変える */
+  position: relative;
+  overflow: hidden;
+}
+
+
+    #result-img {
+      width: 600px;
+      height: auto;
+      margin-top: 40px;
+      left: 80px;
+      top: 1px;
+      object-fit: cover;
+      align-items: center;
+      display: none;
+      margin-left: 0px;
+    }
+
+    .cloud-background-img-3 {
+      
+      position: absolute;
+      left: 694px;
+      top: 345px;
+      object-fit: cover;
+      width: 548px;
+      height: 548px;
+      
+    }
+
+    .cloud-background-img-4 {
+      width: 548px;
+      height: 548px;
+      position: absolute;
+      left: 1242px;
+      top: 497px;
+      object-fit: cover;
+    }
+
+    #result-title {
+      color: #8893b2;
+      text-align: center;
+      font-family: "Jacquard 12";
+      font-size: 150px;
+      font-weight: 400;
+      position: absolute;
+      left: 558px;
+      top: 91px;
+      width: 803px;
+      height: 140px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      white-space: nowrap;
+    }
+
+    .your-mood-of-the-day-is {
+      color: #8893b2;
+      text-align: center;
+      font-family: "Jacquard 12", sans-serif;
+      font-size: 48px;
+      font-weight: 400;
+      position: absolute;
+      left: 629px;
+      top: 49px;
+      width: 645px;
+      height: 61px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #result-message {
+      color: #8893b2;
+      text-align: center;
+      font-family: "VT323", sans-serif;
+      font-size: 48px;
+      font-weight: 400;
+      position: absolute;
+      left: 639px;
+      top: 246px;
+      width: 675px;
+      height: 122px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .your-lucky-item-of-the-day-is {
+      color: #8893b2;
+      text-align: center;
+      font-family: "Jacquard 12", sans-serif;
+      font-size: 50px;
+      font-weight: 400;
+      position: absolute;
+      left: 829px;
+      top: 524px;
+      width: 276px;
+      height: 150px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .your-lucky-action-of-the-day-is {
+      color: #8893b2;
+      text-align: center;
+      font-family: "Jacquard 12", sans-serif;
+      font-size: 50px;
+      font-weight: 400;
+      position: absolute;
+      left: 1378px;
+      top: 674px;
+      width: 276px;
+      height: 150px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .lucky-content {
+      font-family: 'VT323', monospace;
+      font-size: 40px;
+      margin-top: 10px;
+    }
+
+    .share-icon {
+      width: 100px;
+      height: auto;
+      position: absolute;
+ 
+      object-fit: cover;
+      aspect-ratio: 1;
+    }
+
+    .share-buttons {
+      position: absolute;
+      top: 40px;
+      left: 1750px;
+      display: flex;
+      gap: 20px;
+      cursor: pointer;
+    }
+
+    .share-icon:hover {
+      transform: scale(1.2);
+      opacity: 0.8;
+    }
+
+
+  </style>
+</head>
+
+<body>
+  <div class="frame-3">
+    <img id="result-img" src="sleepygirl-collage-img.png" alt="Mood image" />
+    <img class="cloud-background-img-3" src="cloud-background-img.png" />
+    <img class="cloud-background-img-4" src="cloud-background-img.png" />
+    <div class="your-mood-of-the-day-is">your mood of the day is...</div>
+    <div id="result-title">Sleepy Sloth</div>
+    <div id="result-message">Take it easy today.<br>Even the slowest steps move you forward.</div>
+    <div class="your-lucky-item-of-the-day-is">
+      today's lucky item is...
+      <div id="lucky-item-1"><span class="lucky-content">☁ Cloud Pillow</span></div>
+    </div>
+    <div class="your-lucky-action-of-the-day-is" id="lucky-action">
+      today's lucky <br>action is...<br>
+      <span class="lucky-content">Take a short nap</span>
+    </div>
+
+    <div class="share-buttons">
+      <a href="#" id="x-share" target="_blank">
+        <img src="イラスト21.png" alt="Share on X" class="share-icon" />
+      </a>
+    </div>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const result = params.get("result");
+
+    const resultData = {
+      lazycat: {
+        title: "Lazy Cat",
+        img: "img-lc.png",
+        message: "Today you might feel tired...<br>Use your day to heal yourself, and be in your best condition tomorrow!"
+      },
+      calmkoala: {
+        title: "Calm Koala",
+        img: "img-ck.png",
+        message: "You're steady and centered today.<br>Enjoy the flow and stay mindful."
+      },
+      sunnybunny: {
+        title: "Sunny Bunny",
+        img: "img-sb.png",
+        message: "You're full of energy today!<br>Challenge new things and spread your spark!"
+      },
+      curiousfox: {
+        title: "Curious Fox",
+        img: "img-cf.png",
+        message: "You're waiting for new adventures!<br>Your curiosity might lead you to unexpected discoveries!"
+      },
+      stormyraven: {
+        title: "Stormy Raven",
+        img: "img-sr.png",
+        message: "You might be on the edge today.<br>But accept your feelings... every emotion has its purpose."
+      },
+      sleepysloth: {
+        title: "Sleepy Sloth",
+        img: "img-ss.png",
+        message: "Take it easy today.<br>Even the slowest steps move you forward."
+      },
+      dreamydeer: {
+        title: "Dreamy Deer",
+        img: "img-dd.png",
+        message: "You're feeling soft and reflective.<br>Let your imagination guide you."
+      },
+      balancedowl: {
+        title: "Balanced Owl",
+        img: "img-bo.png",
+        message: "You're steady and centered today.<br>Enjoy the flow and stay mindful."
+      }
+    };
+
+    const luckyItems = [
+      "Cloud Pillow",
+      "Melon Bread",
+      "Eye Mask",
+      "Favorite Book",
+      "Aroma Candle",
+      "Music Time",
+      "Cozy Socks",
+      "Favorite Perfume",
+      "Wireless Earphones",
+      "Glossy Lippies",
+      "Sweet Drinks",
+      "Colored Pen",
+      "Ribbon Tie",
+      "Scented hand cream",
+      "Bakery Styled Cookies",
+      "Colorful Stickers"
+
+    ];
+
+    const actions = [
+      "Take a short nap!",
+      "Read a book for 20 minutes!",
+      "Take a walk in nature!",
+      "Listen to some calming music!",
+      "Do some light stretching!",
+      "Relax with a room fragrance!",
+      "Enjoy  calming bath time!",
+      "Try a new type of makeup!",
+      "Take on a fresh challenge!",
+      "Say positive words!",
+      "Feel the sunshine!",
+      "Take a break from the digital world"
+    ];
+
+    if (result) {
+      const resultKeys = result.split(",");
+      const chosenKey = resultKeys[Math.floor(Math.random() * resultKeys.length)];
+      const selectedResult = resultData[chosenKey];
+
+      if (selectedResult) {
+        document.getElementById("result-title").textContent = selectedResult.title;
+        document.getElementById("result-img").src = selectedResult.img;
+        document.getElementById("result-img").style.display = "block";
+        document.getElementById("result-message").innerHTML = selectedResult.message;
+      } else {
+        document.getElementById("result-title").textContent = "Pick Your Mood!";
+        document.getElementById("result-message").innerHTML = "Try again or go back to select your answers.";
+      }
+    }
+
+    const luckyIndex = Math.floor(Math.random() * luckyItems.length);
+    const actionIndex = Math.floor(Math.random() * actions.length);
+
+    document.getElementById("lucky-item-1").innerHTML =
+      `<span class="lucky-content">${luckyItems[luckyIndex]}</span>`;
+
+    document.getElementById("lucky-action").innerHTML =
+      `today's lucky<br>action is...<br><span class="lucky-content">${actions[actionIndex]}</span>`;
+
+    const shareText = "Check your mood animal of the day!";
+    const shareUrl = `${window.location.href}&t=${Date.now()}`; // キャッシュ対策
+
+    document.getElementById("x-share").href =
+      `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`;
+  </script>
+</body>
+
+</html>

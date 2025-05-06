@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>mood checker</title>
+  <link rel="icon" href="favicon img.png">
+    <meta name="description" content="自分の1日の気分を質問に答えて知ろう！">
+  <style>
+    body {
+      text-align: center;
+      margin-top: 56px;
+      letter-spacing: 1.2px;
+      color: #919cb9;
+      background-image: url(background.png);
+      background-size: cover;
+      background-position: bottom;
+      background-size: cover;
+      height: 100vh;
+      margin: 0;
+      background-repeat: no-repeat;
+    
+
+    }
+    @keyframes float {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+.start-button {
+  display: inline-block;
+  position: relative;
+  text-decoration: none;
+  cursor: pointer;
+  animation: float 0.3s ease;
+}
+
+
+.start-button:hover {
+      animation: float 1.5s ease-in-out infinite;
+      opacity: 0.8;
+    }
+.button-content {
+  position: relative;
+  display: inline-block;
+}
+
+.button-content img {
+  display: block;
+  width: 240px; /* 必要に応じてサイズ調整 */
+  height: auto;
+  margin-top: 24px;
+}
+
+.button-content span {
+  position: absolute;
+  top: 50%;
+  margin-top: 12px;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white; /* 画像によって見やすい色に調整してね */
+  font-size: 56px;
+  font-weight: lighter;
+  font-family: "Jacquard 12";
+  pointer-events: none; /* 文字をクリックしてもリンク動作に影響しないように */
+  
+}
+
+
+    header {
+      margin-bottom: 56px;
+      margin-top: 56px;
+      font-family: "Jacquard 12";
+      border-color: transparent;
+      font-size: 56px;
+      letter-spacing: 3px;
+      font-weight: lighter;
+      border-color: transparent;
+     
+    }
+    section p[lang="ja"] {
+  font-family: 'DotGothic16', sans-serif;
+  letter-spacing: -0.3px;
+  font-size: 16px;
+}
+
+section p[lang="en"] {
+  font-family: 'VT323';
+font-size: 20px;
+letter-spacing: -0.5px;
+}
+/* スマホ用 */
+@media (max-width: 480px) {
+  .box {
+    flex-direction: column;
+    font-size: 14px;
+  }
+}
+
+/* iPad縦・横用 */
+@media (min-width: 481px) and (max-width: 1024px) {
+  .box {
+    flex-direction: row;
+    font-size: 16px;
+  }
+}
+
+/* PC用 */
+@media (min-width: 1025px) {
+  .box {
+    max-width: 1000px;
+    margin: auto;
+    font-size: 18px;
+  }
+}
+
+
+  </style>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jacquard+12&display=swap">
+
+  <link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
+
+  <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+
+</head>
+
+<body>
+
+  <header>
+    <h1>mood checker</h1>
+    </header>
+ 
+ <section>
+  <p lang="ja">質問にこたえて、自分の1日のタイプを知ろう！</p>
+  <p lang="en">Find your type of the day by answering your mood!</p>
+  </section>
+ 
+
+
+<a href="question.html" class="start-button">
+  <div class="button-content">
+    
+
+    <img src="start img.png" alt="image of a button">
+
+    <span>Start!</span>
+</div>
+    
+</a>
+  
+ 
+
+
+
+
+</body>
+
+</html>

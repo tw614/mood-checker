@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>気分診断</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      margin-top: 50px;
+    }
+
+    .question {
+      display: none;
+    }
+
+    .active {
+      display: block;
+    }
+
+    button {
+      font-size: 18px;
+      margin: 10px;
+      padding: 10px 20px;
+    }
+  </style>
+</head>
+<body>
+
+<h1>あなたの今の気分を診断！</h1>
+
+<!-- Q1 -->
+<div class="question active" id="q1">
+  <p>Q1. 朝起きたときの気分は？</p>
+  <button onclick="answerQuestion('q1', '元気')">元気！</button>
+  <button onclick="answerQuestion('q1', 'だるい')">だるい…</button>
+</div>
+
+<!-- Q2 -->
+<div class="question" id="q2">
+  <p>Q2. 睡眠時間は？</p>
+  <button onclick="answerQuestion('q2', '十分')">十分寝た</button>
+  <button onclick="answerQuestion('q2', '少ない')">全然寝てない</button>
+</div>
+
+<!-- Q3 -->
+<div class="question" id="q3">
+  <p>Q3. 朝ごはん食べた？</p>
+  <button onclick="answerQuestion('q3', '食べた')">食べた</button>
+  <button onclick="answerQuestion('q3', '抜いた')">抜いた</button>
+</div>
+
+<script>
+  const answers = {};
+
+  function answerQuestion(qId, value) {
+    // 答えを保存
+    answers[qId] = value;
+
+    // 今の質問を非表示
+    const current = document.getElementById(qId);
+    current.classList.remove('active');
+
+    // 次の質問を表示
+    const next = current.nextElementSibling;
+    if (next && next.classList.contains('question')) {
+      next.classList.add('active');
+    } else {
+      showResult(); // 質問が終わったら診断へ
+    }
+  }
+
+  function showResult() {
+    const { q1, q2, q3 } = answers;
+
+    // 条件に応じて飛ぶページを切り替える
+    if (q1 === '元気' && q2 === '十分' && q3 === '食べた') {
+      window.location.href = 'great.html';
+    } else if (q1 === 'だるい' && q2 === '少ない') {
+      window.location.href = 'tired.html';
+    } else if (q1 === 'だるい' && q3 === '抜いた') {
+      window.location.href = 'hungry.html';
+    } else {
+      window.location.href = 'normal.html';
+    }
+  }
+</script>
+
+</body>
+</html>
