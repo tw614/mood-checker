@@ -148,23 +148,27 @@
       "non!": "energized",
       "1 or 2!": "neutral",
       "3 or more...": "ltired",
-      "stopped the it for more sleep...": "tired",
+     "stopped the alarm...": "tired",
       "Yes, alot!": "tired",
       "A little": "tired",
       "Not that much": "neutral",
       "Not at all!": "energized",
-      "bright yellow and orange": "energized",
+      "yellow and orange": "energized",
       "cool blue or gray": "tired",
-      "spring colors like pink or green": "neutral",
+      "soft spring colors": "neutral",
       "pastel colors": "neutral",
       "Go on an adventure!!": "energized",
       "read and relax": "ltired",
-      "long naps to forget everything": "tired",
+      "reset with a nap": "tired",
       "meet friends!!": "neutral",
       "cool and rainy": "tired",
       "warm and sunny": "energized",
       "cloudy and cozy": "ltired",
-      "breeze and fresh!": "neutral"
+      "breeze and fresh!": "neutral",
+      "I'm excited!": "energized",
+      "I feel lazy about it": "ltired",
+      "I'll cancel my plans": "tired",
+      "I don't have plans": "neutral"
     };
 
     function showQuestion() {
@@ -258,11 +262,13 @@
     } else {
       selectedAnimal = animalResult[Math.floor(Math.random() * animalResult.length)];
     }
-  } else if (resultType === "ltired") {
-    if (answers.includes("I'm excited!")|| answers.includes("I don't have plans")) {
-      selectedAnimal = "calmkoala";  // 「I'm looking forward to it!」でcalm koalaが選ばれる
-    } else if (answers.includes("I feel lazy about it") || answers.includes("I'll cancel my plans")) {
-      selectedAnimal = "lazycat";  // 「I'll cancel my plans」や「I feel lazy about it」でlazy cat
+ } else if (resultType === "ltired") {
+  const planAnswer = answers[4]; // 質問5: “How do you feel about today’s plans or schedule?”
+  if (planAnswer === "I'm excited!" || planAnswer === "I don't have plans") {
+    selectedAnimal = "calmkoala";
+  } else if (planAnswer === "I feel lazy about it" || planAnswer === "I'll cancel my plans") {
+    selectedAnimal = "lazycat";
+
     } else {
       selectedAnimal = animalResult[Math.random() < 0.8 ? 0 : 1];  // その他のケースでcalm koalaまたはlazy cat
     }
